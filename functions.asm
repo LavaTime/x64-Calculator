@@ -33,9 +33,3 @@ sprint: ; string printing function declaration
 	pop	rcx
 	pop	rdx
 	ret ; pop preserved values and return control to call
-
-quit:
-	mov	rax, 1 ; sys_exit
-	mov	rbx, 0 ; zero errors
-	int	0x80
-	ret ; quit the program correctly

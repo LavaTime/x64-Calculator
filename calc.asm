@@ -40,53 +40,53 @@ _start:
 
 addition:
 	pop	rsi ; pop next argument
+	ret
 
 substraction:
 	pop	rsi ; pop next argument
+	ret
 
 multiplication:
 	pop	rsi ; pop next argument
+	ret
 
 division:
 	pop	rsi ; pop next argument
+	ret
 
 modulo:
 	pop	rsi ; pop next argument
-	
+	ret
 
-finally:
-;	mov	rax, 4 ; sys_write
-;	mov	rbx, 1 ; std_out
-;	mov	rcx, PROGRAM_FINISHED ; move pointer to output message
-;	mov	rdx, 38 ; string length. : TO-DO calculate length
-;	int	0x80 ; kernel interrupt	
-	
-	mov	rax, ERR_NUM_ARGS
+finally:	
+	mov	rax, PROGRAM_FINISHED
 	call	sprint
 
-;	mov	rax, 1 ; sys_exit
-;	mov	rbx, 0 ; zero errors
-;	int	0x80 ; kernel interrupt
 	call	quit
+	ret
 
 ascii_to_int:
 	xor	ax, ax ; xor - not equals, store zero in ax
 	xor	cx, cx; xor - not equals, store zero in ax
 	mov	bx, 10 ; 10 for base ten, Google convering decimal to binary
 
-err_num_args:
-;	mov	rax, 4 ; sys_write
-;	mov	rbx, 1 ; std_out
-;	mov	rcx, ERR_NUM_ARGS ; move pointer to output message
-;	mov	rdx, 62; string length. TO-DO: calculate length
-;	int	0x80 ; kernel interrupt
+.loop_block:
+	
+	mov	cl, [rsi] ; move cl pointer to [index] rsi
+	cmp	cl, byte 0 ; if charcater is (NULL) break loop
+	je	.return_block
 
+.return_block:
+
+	
+
+err_num_args:
 	mov	rax, ERR_NUM_ARGS
 	call	sprint
 
-;	mov	rax, 1 ; sys_exit
-;	mov	rbx, 1 ; error registery
-;	int	0x80 ; kernel interrupt
-
 	call	quit
-	
+
+quit:
+	mov	rax, 1 ; sys_exit
+	mov	rbx, 0 ; zero errors
+	int	0x80 ; kernel interrupt
