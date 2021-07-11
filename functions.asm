@@ -33,3 +33,11 @@ sprint: ; string printing function declaration
 	pop	rcx
 	pop	rdx
 	ret ; pop preserved values and return control to call
+
+printlen:
+	mov	rcx, rax
+	mov	rax, 4
+	mov	rbx, 1
+	int	0x80
+	ret
+

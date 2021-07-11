@@ -8,6 +8,7 @@ SECTION .data
 	PROGRAM_FINISHED:    db    "Program finished executing. Good Bye!", 0xA, 0x0
 	ERR_INVALID_OPERATOR:	db	"Invalid operator", 0xA, 0x0
 	ERR_INVALID_OPERAND:	db	"Invalid operand", 0xA, 0x0
+	BREAK_POINT:	db	"Break Point!", 0xA, 0x0
 	BYTE_BUFFER:	times	10	db	0 ; size 10, holds value 0
 
 SECTION .text
@@ -43,22 +44,44 @@ _start:
 
 addition:
 	pop	rsi ; pop next argument
+	call	ascii_to_int ; convert the number to integer
+	mov	r10, rax ; move the operand to r10 register
+	pop	rsi ; pop the next argument
+	call	ascii_to_int ; convert to integer
+	add	rax, r10 ; add r10 value to rax (which is the value of the second operand)
+
+	jmp	print_result ; print the result and exit	
 	
 
 substraction:
 	pop	rsi ; pop next argument
+
+	jmp	print_result
 	
 
 multiplication:
 	pop	rsi ; pop next argument
+
+	jmp	print_result
 	
 
 division:
 	pop	rsi ; pop next argument
+
+	jmp	print_result
 	
 
 modulo:
 	pop	rsi ; pop next argument
+
+	jmp	print_result
+
+print_result:
+	call	int_to_ascii
+	mov	rax, r9
+	mov	rdx, r11
+	call	printlen
+	jmp	finally
 	
 
 finally:	
@@ -128,13 +151,13 @@ err_num_args:
 	mov	rax, ERR_NUM_ARGS
 	call	sprint
 
-	call	quit
+	jmp	quit
 
 err_invalid_operand:
 	mov	rax, ERR_INVALID_OPERAND
 	call	sprint
 
-	call	quit
+	jmp	quit
 
 quit:
 	mov	rax, 1 ; sys_exit
